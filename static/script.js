@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
         let data = {
             name: document.getElementById("user_name").value,
             phone: document.getElementById("contact_phone").value,
-            email: "gnb-client@mail.ru",  // Укажи email клиента
             drill_length: document.getElementById("drill_length").value,
             pipe_diameter: document.getElementById("pipe_diameter").value
         };
