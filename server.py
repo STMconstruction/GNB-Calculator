@@ -1,4 +1,4 @@
-лfrom flask import Flask, request, jsonify
+from flask import Flask, request, jsonify
 import json
 import smtplib
 from email.mime.text import MIMEText
@@ -7,12 +7,12 @@ import os
 
 app = Flask(__name__)
 
-# 🔥 Используем переменные окружения для безопасности
+# Настройки SMTP (Email)
 SMTP_SERVER = "smtp.mail.ru"
 SMTP_PORT = 465
-SMTP_EMAIL = os.getenv("SMTP_EMAIL")  # Загружаем Email из Render Environment Variables
-SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")  # Пароль тоже загружаем безопасно
-RECEIVER_EMAIL = "talgat707@mail.ru"  # Получатель email
+SMTP_EMAIL = os.getenv("SMTP_EMAIL")  # Берем Email из Render Environment Variables
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")  # Берем пароль из Render
+RECEIVER_EMAIL = "talgat707@mail.ru"
 
 def send_email(client_data):
     """Функция отправки email"""
@@ -43,7 +43,7 @@ def index():
 @app.route("/submit", methods=["POST"])
 def submit_request():
     try:
-        client_data = request.json  # Получаем данные из запроса
+        client_data = request.json
         print(f"📩 Получены данные: {client_data}")
 
         # Сохранение данных в файл (локально)
@@ -59,12 +59,7 @@ def submit_request():
         print(f"❌ Ошибка: {e}")
         return jsonify({"success": False, "error": str(e)})
 
-print("✅ Зарегистрированные маршруты Flask:")
-for rule in app.url_map.iter_rules():
-    print(rule)
-
 # Запуск сервера на порту 10000 для Render
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",
-
+    app.run(host="0.0.0.0", port=10000)
 
