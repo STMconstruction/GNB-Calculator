@@ -1,36 +1,31 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 import json
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
 
-app = Flask(__name__)
+# 📌 Создаем приложение Flask и указываем, где хранятся файлы фронтенда
+app = Flask(__name__, static_folder="static")
 
-# Настройки SMTP (Email)
-SMTP_SERVER = "smtp.mail.ru"
-SMTP_PORT = 465
-SMTP_EMAIL = os.getenv("SMTP_EMAIL")
-SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
-RECEIVER_EMAIL = "talgat707@mail.ru"
-
-# 🔍 Проверяем переменные перед запуском
-print(f"📌 SMTP_EMAIL: {SMTP_EMAIL}")
-print(f"📌 SMTP_PASSWORD: {'✅ Установлен' if SMTP_PASSWORD else '❌ НЕ установлен'}")
-
-# 🌐 Маршрут для проверки работы сервера
+# ✅ 1. Раздача главной страницы (index.html)
 @app.route("/")
 def index():
-    return "Сервер работает! 🚀"
+    return send_from_directory("static", "index.html")
 
-# 📩 Маршрут для обработки формы
+# ✅ 2. Раздача статических файлов (CSS, JS)
+@app.route("/<path:filename>")
+def static_files(filename):
+    return send_from_directory("static", filename)
+
+# 🔥 3. API-эндпоинт для отправки email
 @app.route("/submit", methods=["POST"])
 def submit_request():
     try:
         client_data = request.json
         print(f"📩 Получены данные: {client_data}")
 
-        # Сохранение данных
+        # Сохранение данных в файл (локально)
         with open("clients.json", "a", encoding="utf-8") as f:
             json.dump(client_data, f, ensure_ascii=False)
             f.write("\n")
@@ -43,17 +38,13 @@ def submit_request():
         print(f"❌ Ошибка: {e}")
         return jsonify({"success": False, "error": str(e)})
 
-# 📨 Функция отправки email
+# ✅ 4. Функция отправки email через Mail.ru SMTP
 def send_email(client_data):
-    global SMTP_EMAIL, SMTP_PASSWORD
-
-    print(f"📌 Отправка email. Текущие значения:")
-    print(f"📌 SMTP_EMAIL: {SMTP_EMAIL if SMTP_EMAIL else '❌ НЕ установлен'}")
-    print(f"📌 SMTP_PASSWORD: {'✅ Установлен' if SMTP_PASSWORD else '❌ НЕ установлен'}")
-
-    if not SMTP_EMAIL or not SMTP_PASSWORD:
-        print("❌ ОШИБКА: SMTP_EMAIL или SMTP_PASSWORD отсутствует!")
-        return
+    SMTP_SERVER = "smtp.mail.ru"
+    SMTP_PORT = 465
+    SMTP_EMAIL = os.getenv("SMTP_EMAIL")
+    SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
+    RECEIVER_EMAIL = "talgat707@mail.ru"
 
     msg = MIMEMultipart()
     msg["From"] = SMTP_EMAIL
@@ -73,12 +64,7 @@ def send_email(client_data):
     except Exception as e:
         print(f"❌ Ошибка отправки email: {e}")
 
-# 📌 Логируем зарегистрированные маршруты перед запуском сервера
-print("✅ Зарегистрированные маршруты Flask:")
-for rule in app.url_map.iter_rules():
-    print(rule)
-
-# 🔥 Запуск сервера на порту 10000 для Render
+# ✅ 5. Запуск сервера на порту 10000 для Render
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
 
