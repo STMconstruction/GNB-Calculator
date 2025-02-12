@@ -1,0 +1,37 @@
+// Добавляем обработчик клика на кнопку
+document.getElementById("calculateButton").addEventListener("click", function() {
+    calculate();
+});
+
+function calculate() {
+    const name = document.getElementById('user_name').value;
+    const phone = document.getElementById('contact_phone').value;
+    const length = parseFloat(document.getElementById('drill_length').value);
+    const diameter = parseInt(document.getElementById('pipe_diameter').value);
+
+    // Проверяем корректность данных
+    if (!name || !phone || isNaN(length) || isNaN(diameter) || length <= 0) {
+        alert('Пожалуйста, заполните все поля корректно.');
+        return;
+    }
+
+    let pricePerMeter = 0;
+
+    // Логика расчета стоимости на основе тарифов
+    if (length < 60) {
+        if (diameter <= 100) pricePerMeter = 15000;
+        else if (diameter <= 200) pricePerMeter = 17000;
+        else pricePerMeter = 18000;
+    } else {
+        if (diameter <= 100) pricePerMeter = 10000;
+        else if (diameter <= 200) pricePerMeter = 12000;
+        else pricePerMeter = 13000;
+    }
+
+    // Вычисляем стоимость
+    const cost = length * pricePerMeter;
+
+    // Выводим результат на экран
+    document.getElementById('result').innerHTML = `<h3>${name}, примерная стоимость: ${cost.toLocaleString()} тенге.</h3>`;
+}
+
