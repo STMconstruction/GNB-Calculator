@@ -45,6 +45,16 @@ def submit_request():
 
 # 📨 Функция отправки email
 def send_email(client_data):
+    global SMTP_EMAIL, SMTP_PASSWORD
+
+    print(f"📌 Отправка email. Текущие значения:")
+    print(f"📌 SMTP_EMAIL: {SMTP_EMAIL if SMTP_EMAIL else '❌ НЕ установлен'}")
+    print(f"📌 SMTP_PASSWORD: {'✅ Установлен' if SMTP_PASSWORD else '❌ НЕ установлен'}")
+
+    if not SMTP_EMAIL or not SMTP_PASSWORD:
+        print("❌ ОШИБКА: SMTP_EMAIL или SMTP_PASSWORD отсутствует!")
+        return
+
     msg = MIMEMultipart()
     msg["From"] = SMTP_EMAIL
     msg["To"] = RECEIVER_EMAIL
