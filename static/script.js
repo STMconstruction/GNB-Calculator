@@ -2,14 +2,36 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("calculateButton").addEventListener("click", function (event) {
         event.preventDefault();  // Останавливаем стандартное поведение кнопки
 
+        let name = document.getElementById("user_name").value;
+        let phone = document.getElementById("contact_phone").value;
+        let email = document.getElementById("user_email").value;
+        let drill_length = parseFloat(document.getElementById("drill_length").value);
+        let pipe_diameter = parseInt(document.getElementById("pipe_diameter").value);
+
+        if (!name || !phone || !email || isNaN(drill_length)) {
+            alert("⚠️ Пожалуйста, заполните все поля!");
+            return;
+        }
+
+        // Простая формула расчета стоимости
+        let pricePerMeter = pipe_diameter <= 100 ? 1000 : pipe_diameter <= 200 ? 1500 : 2000;
+        let totalCost = drill_length * pricePerMeter;
+
+        // Выводим расчет на страницу
+        document.getElementById("result").innerHTML = `<h3>Предварительная стоимость: ${totalCost} ₽</h3>`;
+
+        // Формируем данные для отправки
         let data = {
-            name: document.getElementById("user_name").value,
-            phone: document.getElementById("contact_phone").value,
-            drill_length: document.getElementById("drill_length").value,
-            pipe_diameter: document.getElementById("pipe_diameter").value
+            name: name,
+            phone: phone,
+            email: email,
+            drill_length: drill_length,
+            pipe_diameter: pipe_diameter,
+            total_cost: totalCost
         };
 
-        fetch("https://gnb-calculator.onrender.com/submit", {  // Отправка данных на сервер
+        // Отправляем данные на сервер Flask
+        fetch("https://gnb-calculator.onrender.com/submit", {  
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
@@ -17,11 +39,11 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => response.json())
         .then(data => {
             console.log("Ответ сервера:", data);
-            alert("✅ Заявка отправлена! Данные пришли вам на почту.");
+            alert("✅ Расчет выполнен и данные отправлены на почту!");
         })
         .catch(error => {
             console.error("Ошибка:", error);
-            alert("❌ Ошибка при отправке!");
+            alert("❌ Ошибка при отправке данных!");
         });
     });
 });
