@@ -10,31 +10,11 @@ app = Flask(__name__)
 # Настройки SMTP (Email)
 SMTP_SERVER = "smtp.mail.ru"
 SMTP_PORT = 465
-SMTP_EMAIL = os.getenv("SMTP_EMAIL")  # Берем Email из Render Environment Variables
-SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")  # Берем пароль из Render
+SMTP_EMAIL = os.getenv("SMTP_EMAIL")  # Загружаем Email из Render Environment Variables
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")  # Пароль тоже загружаем безопасно
 RECEIVER_EMAIL = "talgat707@mail.ru"
 
-def send_email(client_data):
-    """Функция отправки email"""
-    msg = MIMEMultipart()
-    msg["From"] = SMTP_EMAIL
-    msg["To"] = RECEIVER_EMAIL
-    msg["Subject"] = "Новая заявка от клиента"
-
-    body = f"Имя: {client_data.get('name')}\nEmail: {client_data.get('email')}"
-    msg.attach(MIMEText(body, "plain", "utf-8"))
-
-    try:
-        print(f"📨 Отправка email на {RECEIVER_EMAIL}...")
-        server = smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT)
-        server.login(SMTP_EMAIL, SMTP_PASSWORD)
-        server.sendmail(SMTP_EMAIL, RECEIVER_EMAIL, msg.as_string())
-        server.quit()
-        print("✅ Email отправлен!")
-    except Exception as e:
-        print(f"❌ Ошибка отправки email: {e}")
-
-# 🌐 Главная страница (Проверка работы сервера)
+# 🌐 Маршрут для проверки работы сервера
 @app.route("/")
 def index():
     return "Сервер работает! 🚀"
@@ -58,6 +38,31 @@ def submit_request():
     except Exception as e:
         print(f"❌ Ошибка: {e}")
         return jsonify({"success": False, "error": str(e)})
+
+# 📨 Функция отправки email
+def send_email(client_data):
+    msg = MIMEMultipart()
+    msg["From"] = SMTP_EMAIL
+    msg["To"] = RECEIVER_EMAIL
+    msg["Subject"] = "Новая заявка от клиента"
+
+    body = f"Имя: {client_data.get('name')}\nEmail: {client_data.get('email')}"
+    msg.attach(MIMEText(body, "plain", "utf-8"))
+
+    try:
+        print(f"📨 Отправка email на {RECEIVER_EMAIL}...")
+        server = smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT)
+        server.login(SMTP_EMAIL, SMTP_PASSWORD)
+        server.sendmail(SMTP_EMAIL, RECEIVER_EMAIL, msg.as_string())
+        server.quit()
+        print("✅ Email отправлен!")
+    except Exception as e:
+        print(f"❌ Ошибка отправки email: {e}")
+
+# 📌 Логируем зарегистрированные маршруты перед запуском сервера
+print("✅ Зарегистрированные маршруты Flask:")
+for rule in app.url_map.iter_rules():
+    print(rule)
 
 # Запуск сервера на порту 10000 для Render
 if __name__ == "__main__":
