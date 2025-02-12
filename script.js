@@ -75,11 +75,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function sendDataToServer(data) {
-        fetch("https://gnb-server.onrender.com/submit", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
-        })
+       fetch("https://gnb-calculator.onrender.com/submit", { 
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value
+    })
+})
+
             .then(response => response.json())
             .then(result => {
                 if (result.success) {
