@@ -15,9 +15,9 @@ SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")  # Пароль тоже загруж
 RECEIVER_EMAIL = "talgat707@mail.ru"
 
 # 🌐 Проверяем, загружены ли переменные окружения
-print(f"📌 Проверка SMTP_EMAIL: {SMTP_EMAIL}")
-print(f"📌 Проверка SMTP_PASSWORD: {'✅ Установлен' if SMTP_PASSWORD else '❌ НЕ установлен'}")
-
+print(f"❌ SMTP_EMAIL или SMTP_PASSWORD пустой! Значения:")
+    print(f"SMTP_EMAIL: {SMTP_EMAIL}")
+    print(f"SMTP_PASSWORD: {SMTP_PASSWORD}")
 # 🌐 Маршрут для проверки работы сервера
 @app.route("/")
 def index():
