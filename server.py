@@ -10,14 +10,14 @@ app = Flask(__name__)
 # Настройки SMTP (Email)
 SMTP_SERVER = "smtp.mail.ru"
 SMTP_PORT = 465
-SMTP_EMAIL = os.getenv("SMTP_EMAIL")  # Загружаем Email из Render Environment Variables
-SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")  # Пароль тоже загружаем безопасно
+SMTP_EMAIL = os.getenv("SMTP_EMAIL")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
 RECEIVER_EMAIL = "talgat707@mail.ru"
 
-# 🌐 Проверяем, загружены ли переменные окружения
-print(f"❌ SMTP_EMAIL или SMTP_PASSWORD пустой! Значения:")
-    print(f"SMTP_EMAIL: {SMTP_EMAIL}")
-    print(f"SMTP_PASSWORD: {SMTP_PASSWORD}")
+# 🔍 Проверяем переменные перед запуском
+print(f"📌 SMTP_EMAIL: {SMTP_EMAIL}")
+print(f"📌 SMTP_PASSWORD: {'✅ Установлен' if SMTP_PASSWORD else '❌ НЕ установлен'}")
+
 # 🌐 Маршрут для проверки работы сервера
 @app.route("/")
 def index():
@@ -30,7 +30,7 @@ def submit_request():
         client_data = request.json
         print(f"📩 Получены данные: {client_data}")
 
-        # Сохранение данных в файл (локально)
+        # Сохранение данных
         with open("clients.json", "a", encoding="utf-8") as f:
             json.dump(client_data, f, ensure_ascii=False)
             f.write("\n")
@@ -67,8 +67,8 @@ def send_email(client_data):
 print("✅ Зарегистрированные маршруты Flask:")
 for rule in app.url_map.iter_rules():
     print(rule)
-        
-# Запуск сервера на порту 10000 для Render
+
+# 🔥 Запуск сервера на порту 10000 для Render
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
 
