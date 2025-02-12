@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор услуг ГНБ</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <h1>Калькулятор услуг ГНБ</h1>
+
+    <form id="calcForm">
+        <label for="user_name">Ваше имя:</label>
+        <input type="text" id="user_name" placeholder="Введите имя" required>
+
+        <label for="contact_phone">Контактный телефон:</label>
+        <input type="text" id="contact_phone" placeholder="Введите телефон" required>
+
+        <label for="drill_length">Длина бурения (м):</label>
+        <input type="number" id="drill_length" placeholder="Введите длину" required>
+
+        <label for="pipe_diameter">Диаметр трубы (мм):</label>
+        <select id="pipe_diameter" required>
+            <option value="100">До 100 мм</option>
+            <option value="200">100–200 мм</option>
+            <option value="315">200–315 мм</option>
+        </select>
+
+        <button type="button" id="calculateButton">Рассчитать стоимость</button>
+    </form>
+
+    <p class="warning">⚠️ Все расчеты являются предварительными.</p>
+    <div id="result"></div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
+
