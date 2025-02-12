@@ -14,6 +14,10 @@ SMTP_EMAIL = os.getenv("SMTP_EMAIL")  # Загружаем Email из Render Env
 SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")  # Пароль тоже загружаем безопасно
 RECEIVER_EMAIL = "talgat707@mail.ru"
 
+# 🌐 Проверяем, загружены ли переменные окружения
+print(f"📌 Проверка SMTP_EMAIL: {SMTP_EMAIL}")
+print(f"📌 Проверка SMTP_PASSWORD: {'✅ Установлен' if SMTP_PASSWORD else '❌ НЕ установлен'}")
+
 # 🌐 Маршрут для проверки работы сервера
 @app.route("/")
 def index():
@@ -63,7 +67,7 @@ def send_email(client_data):
 print("✅ Зарегистрированные маршруты Flask:")
 for rule in app.url_map.iter_rules():
     print(rule)
-
+        
 # Запуск сервера на порту 10000 для Render
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
