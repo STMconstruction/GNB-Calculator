@@ -48,6 +48,7 @@ def send_email(client_data):
     📩 Новая заявка:
     Имя: {client_data.get('name')}
     Телефон: {client_data.get('phone')}
+    Email: {client_data.get('email')}
     Длина бурения: {client_data.get('drill_length')} м
     Диаметр трубы: {client_data.get('pipe_diameter')} мм
     💰 Итоговая стоимость: {client_data.get('total_cost')} ₽

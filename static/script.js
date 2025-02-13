@@ -13,14 +13,14 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // Простая формула расчета стоимости
+        // Формула расчета стоимости
         let pricePerMeter = pipe_diameter <= 100 ? 1000 : pipe_diameter <= 200 ? 1500 : 2000;
         let totalCost = drill_length * pricePerMeter;
 
-        // Выводим расчет на страницу
+        // Вывод расчета на страницу
         document.getElementById("result").innerHTML = `<h3>Предварительная стоимость: ${totalCost} ₽</h3>`;
 
-        // Формируем данные для отправки
+        // Формируем данные для отправки на сервер
         let data = {
             name: name,
             phone: phone,
