@@ -1,0 +1,40 @@
+л    document.getElementById("calculateButton").addEventListener("click", function (event) {
+        event.preventDefault();  // Останавливаем стандартное поведение кнопки
+
+        let drill_length = parseFloat(document.getElementById("drill_length").value);
+        let pipe_diameter = parseInt(document.getElementById("pipe_diameter").value);
+
+        // Простейшая формула расчета стоимости (можно изменить по желанию)
+        let pricePerMeter = pipe_diameter <= 100 ? 1000 : pipe_diameter <= 200 ? 1500 : 2000;
+        let totalCost = drill_length * pricePerMeter;
+
+        // Вывод результата на страницу
+        document.getElementById("result").innerHTML = `<h3>Предварительная стоимость: ${totalCost} ₽</h3>`;
+
+        // Подготовка данных для отправки
+        let data = {
+            name: document.getElementById("user_name").value,
+            phone: document.getElementById("contact_phone").value,
+            drill_length: drill_length,
+            pipe_diameter: pipe_diameter,
+            total_cost: totalCost
+        };
+
+        // Отправка данных на сервер Flask
+        fetch("https://gnb-calculator.onrender.com/submit", {  
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Ответ сервера:", data);
+            alert("✅ Расчет выполнен и данные отправлены на почту!");
+        })
+        .catch(error => {
+            console.error("Ошибка:", error);
+            alert("❌ Ошибка при отправке данных!");
+        });
+    });
+});
+
