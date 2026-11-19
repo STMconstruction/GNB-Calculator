@@ -19,6 +19,10 @@ form {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 /* Поля ввода */
 input, select {
     width: 100%;
@@ -67,3 +71,50 @@ button:hover {
     color: yellow;
 }
 
+
+/* Скрытое поле-ловушка для ботов */
+.hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+/* Кнопка WhatsApp под результатом */
+.wa-button {
+    display: inline-block;
+    margin: 10px auto 20px;
+    padding: 12px 24px;
+    background-color: #25D366;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.wa-button:hover {
+    background-color: #1ebe5b;
+}
+
+/* Плавающая кнопка WhatsApp */
+.wa-float {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #25D366;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+}
