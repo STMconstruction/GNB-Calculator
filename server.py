@@ -40,7 +40,7 @@ def submit_request():
             f"Телефон: {client_data.get('phone')}\n"
             f"Длина бурения: {client_data.get('drill_length')} м\n"
             f"Диаметр трубы: {client_data.get('pipe_diameter')} мм\n"
-            f"Расчетная стоимость: {client_data.get('total_cost')} руб.\n"
+            f"Расчетная стоимость: {client_data.get('total_cost')} тг.\n"
         )
         msg.attach(MIMEText(body, "plain", "utf-8"))
 
